@@ -131,6 +131,16 @@ char buf[1]; getentropy(buf, 1);
 		CPPFLAGS="$CPPFLAGS -D__EXTENSIONS__ -D_XOPEN_SOURCE=600 -DBSD_COMP"
 		AC_SUBST([PLATFORM_LDADD], ['-ldl -lmd -lnsl -lsocket'])
 		;;
+	emscripten)
+		CPPFLAGS="$CPPFLAGS -D_POSIX_SOURCE -D_GNU_SOURCE"
+		case $host_cpu in
+			asmjs)
+				AC_SUBST([PLATFORM_LDADD], ['-sWASM=0'])
+				#LDLAGS="$LDFLAGS -sWASM=0"
+				;;
+		esac
+		enable_hardening=no
+		;;
 	*) ;;
 esac
 
@@ -160,4 +170,6 @@ AM_CONDITIONAL([HOST_NETBSD],  [test x$HOST_OS = xnetbsd])
 AM_CONDITIONAL([HOST_OPENBSD], [test x$HOST_OS = xopenbsd])
 AM_CONDITIONAL([HOST_SOLARIS], [test x$HOST_OS = xsolaris])
 AM_CONDITIONAL([HOST_WIN],     [test x$HOST_OS = xwin])
+AM_CONDITIONAL([HOST_WASM323], [test x$HOST_OS = wasm32])
+AM_CONDITIONAL([HOST_ASMJS],   [test x$HOST_OS = asmjs])
 ])

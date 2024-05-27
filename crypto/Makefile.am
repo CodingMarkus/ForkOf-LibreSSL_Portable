@@ -409,6 +409,16 @@ libcrypto_la_CPPFLAGS += -I$(top_srcdir)/crypto/bn/arch/amd64/
 endif
 noinst_HEADERS += bn/arch/amd64/bn_arch.h
 
+if HOST_WASM32
+libcrypto_la_CPPFLAGS += -I$(top_srcdir)/crypto/bn/arch/wasm32/
+endif
+noinst_HEADERS += bn/arch/sh/bn_arch.h
+
+if HOST_ASMJS
+libcrypto_la_CPPFLAGS += -I$(top_srcdir)/crypto/bn/arch/asmjs/
+endif
+noinst_HEADERS += bn/arch/sh/bn_arch.h
+
 # buffer
 libcrypto_la_SOURCES += buffer/buf_err.c
 libcrypto_la_SOURCES += buffer/buffer.c
