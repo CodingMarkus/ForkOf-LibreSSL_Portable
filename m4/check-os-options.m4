@@ -109,7 +109,7 @@ char buf[1]; getentropy(buf, 1);
 		)
 		CPPFLAGS="$CPPFLAGS -D_OPENBSD_SOURCE"
 		;;
-	*openbsd* | *bitrig*)
+	*openbsd*)
 		HOST_OS=openbsd
 		HOST_ABI=elf
 		AC_DEFINE([HAVE_ATTRIBUTE__BOUNDED__], [1], [OpenBSD gcc has bounded])
@@ -141,7 +141,9 @@ char buf[1]; getentropy(buf, 1);
 		esac
 		enable_hardening=no
 		;;
-	*) ;;
+	*)
+		HOST_OS=unsupported
+		;;
 esac
 
 # Check if time_t is sized correctly
@@ -155,7 +157,7 @@ if test "$ac_cv_sizeof_time_t" = "4"; then
     if test "$host_os" = "mingw32" ; then
         echo " **"
         echo " ** You can solve this by adjusting the build flags in your"
-        echo " ** mingw-w64 toolchain. Refer to README.windows for details."
+        echo " ** mingw-w64 toolchain. Refer to README.mingw.md for details."
     fi
 fi
 
