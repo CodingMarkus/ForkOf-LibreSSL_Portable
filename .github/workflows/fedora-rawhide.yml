@@ -6,7 +6,7 @@ on:
   - cron: "0 0 * * *"
 
 concurrency:
-  group: "${{ github.workflow }}-${{ github.ref }}"
+  group: "${{ github.workflow }}-${{ github.event.number || github.ref }}"
   cancel-in-progress: true
 
 permissions:
@@ -23,7 +23,7 @@ jobs:
     container:
       image: fedora:rawhide
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install dependencies
       run: |
         dnf -y install git make clang cmake ninja-build autoconf automake libtool diffutils patch

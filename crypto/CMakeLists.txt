@@ -201,9 +201,9 @@ set(
 	${CRYPTO_SRC}
 	cpt_err.c
 	cryptlib.c
+	crypto_ex_data.c
 	crypto_init.c
 	cversion.c
-	ex_data.c
 	malloc-wrapper.c
 	mem_clr.c
 	mem_dbg.c
@@ -359,26 +359,11 @@ set(
 	ct/ct_x509v3.c
 	curve25519/curve25519-generic.c
 	curve25519/curve25519.c
-	des/cbc_cksm.c
-	des/cbc_enc.c
-	des/cfb64ede.c
-	des/cfb64enc.c
-	des/cfb_enc.c
+	des/des.c
+	des/des_cksum.c
 	des/des_enc.c
-	des/ecb3_enc.c
-	des/ecb_enc.c
-	des/ede_cbcm_enc.c
-	des/enc_read.c
-	des/fcrypt.c
-	des/fcrypt_b.c
-	des/ofb64ede.c
-	des/ofb64enc.c
-	des/ofb_enc.c
-	des/pcbc_enc.c
-	des/qud_cksm.c
-	des/set_key.c
-	des/str2key.c
-	des/xcbc_enc.c
+	des/des_fcrypt.c
+	des/des_key.c
 	dh/dh_ameth.c
 	dh/dh_asn1.c
 	dh/dh_check.c
@@ -456,7 +441,6 @@ set(
 	evp/m_sha3.c
 	evp/m_sigver.c
 	evp/m_sm3.c
-	evp/m_wp.c
 	evp/p_legacy.c
 	evp/p_lib.c
 	evp/p_sign.c
@@ -471,6 +455,7 @@ set(
 	idea/idea.c
 	kdf/hkdf_evp.c
 	kdf/kdf_err.c
+	kdf/tls1_prf.c
 	lhash/lhash.c
 	md4/md4.c
 	md5/md5.c
@@ -578,8 +563,6 @@ set(
 	ui/ui_err.c
 	ui/ui_lib.c
 	ui/ui_null.c
-	ui/ui_util.c
-	whrlpool/whirlpool.c
 	x509/by_dir.c
 	x509/by_file.c
 	x509/by_mem.c
@@ -620,6 +603,7 @@ set(
 	x509/x509_r2x.c
 	x509/x509_req.c
 	x509/x509_set.c
+	x509/x509_siginfo.c
 	x509/x509_skey.c
 	x509/x509_trs.c
 	x509/x509_txt.c
@@ -800,12 +784,14 @@ target_include_directories(crypto_obj
 		bio
 		bn
 		bytestring
+		conf
 		dh
 		dsa
 		curve25519
 		ec
 		ecdh
 		ecdsa
+		err
 		evp
 		hidden
 		hmac
@@ -823,24 +809,34 @@ target_include_directories(crypto_obj
 		${CMAKE_BINARY_DIR}/include)
 
 if(HOST_AARCH64)
+	target_include_directories(crypto_obj PRIVATE arch/aarch64/)
 	target_include_directories(crypto_obj PRIVATE bn/arch/aarch64/)
 elseif(HOST_ARM)
+	target_include_directories(crypto_obj PRIVATE arch/arm/)
 	target_include_directories(crypto_obj PRIVATE bn/arch/arm/)
 elseif(HOST_I386)
+	target_include_directories(crypto_obj PRIVATE arch/i386/)
 	target_include_directories(crypto_obj PRIVATE bn/arch/i386/)
 elseif(HOST_MIPS64)
+	target_include_directories(crypto_obj PRIVATE arch/mips64)
 	target_include_directories(crypto_obj PRIVATE bn/arch/mips64)
 elseif(HOST_MIPS)
+	# XXX - can this go away? the directory doesn't exist...
 	target_include_directories(crypto_obj PRIVATE bn/arch/mips)
 elseif(HOST_POWERPC)
+	target_include_directories(crypto_obj PRIVATE arch/powerpc)
 	target_include_directories(crypto_obj PRIVATE bn/arch/powerpc)
 elseif(HOST_POWERPC64)
+	target_include_directories(crypto_obj PRIVATE arch/powerpc64)
 	target_include_directories(crypto_obj PRIVATE bn/arch/powerpc64)
 elseif(HOST_RISCV64)
+	target_include_directories(crypto_obj PRIVATE arch/riscv64)
 	target_include_directories(crypto_obj PRIVATE bn/arch/riscv64)
 elseif(HOST_SPARC64)
+	target_include_directories(crypto_obj PRIVATE arch/sparc64)
 	target_include_directories(crypto_obj PRIVATE bn/arch/sparc64)
 elseif(HOST_X86_64)
+	target_include_directories(crypto_obj PRIVATE arch/amd64)
 	target_include_directories(crypto_obj PRIVATE bn/arch/amd64)
 endif()
 

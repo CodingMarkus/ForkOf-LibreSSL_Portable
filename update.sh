@@ -132,15 +132,15 @@ copy_hdrs $libcrypto_src "stack/stack.h lhash/lhash.h stack/safestack.h
 	hkdf/hkdf.h hmac/hmac.h rand/rand.h md5/md5.h
 	x509/x509v3.h conf/conf.h ocsp/ocsp.h
 	aes/aes.h modes/modes.h asn1/asn1t.h bf/blowfish.h
-	bio/bio.h cast/cast.h cmac/cmac.h cms/cms.h conf/conf_api.h des/des.h dh/dh.h
+	bio/bio.h cast/cast.h cmac/cmac.h cms/cms.h des/des.h dh/dh.h
 	dsa/dsa.h engine/engine.h ui/ui.h pkcs12/pkcs12.h ts/ts.h
-	md4/md4.h ripemd/ripemd.h whrlpool/whrlpool.h idea/idea.h
-	rc2/rc2.h rc4/rc4.h ui/ui_compat.h txt_db/txt_db.h
+	md4/md4.h ripemd/ripemd.h idea/idea.h
+	rc2/rc2.h rc4/rc4.h txt_db/txt_db.h
 	sm3/sm3.h sm4/sm4.h chacha/chacha.h evp/evp.h poly1305/poly1305.h
 	camellia/camellia.h curve25519/curve25519.h
 	ct/ct.h kdf/kdf.h"
 
-copy_hdrs $libssl_src "srtp.h ssl.h ssl2.h ssl3.h ssl23.h tls1.h dtls1.h"
+copy_hdrs $libssl_src "srtp.h ssl.h ssl3.h tls1.h dtls1.h"
 
 # override upstream opensslv.h if a local version exists
 if [ -f patches/opensslv.h ]; then
@@ -170,6 +170,8 @@ for i in $libcrypto_src/arch/*; do
 	arch=`basename $i`
 	mkdir -p include/arch/$arch
 	$CP $libcrypto_src/arch/$arch/opensslconf.h include/arch/$arch/
+	mkdir -p crypto/arch/$arch
+	$CP $libcrypto_src/arch/$arch/crypto_arch.h crypto/arch/$arch/
 done
 
 for i in $libcrypto_src/bn/arch/*; do
@@ -333,7 +335,7 @@ done
 echo "copying libssl source"
 rm -f ssl/*.c ssl/*.h
 touch ssl/empty.c
-for i in `awk '/SOURCES|HEADERS/ { print $3 }' ssl/Makefile.am` ; do
+for i in `awk '/SOURCES|HEADERS/ { if ($3 !~ /.*crypto_arch.*/) print $3 }' ssl/Makefile.am` ; do
 	dir=`dirname $i`
 	mkdir -p ssl/$dir
 	$CP $libssl_src/$i ssl/$i

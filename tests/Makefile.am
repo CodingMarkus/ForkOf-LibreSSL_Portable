@@ -19,6 +19,47 @@ AM_CPPFLAGS += -I $(top_srcdir)/apps/openssl
 AM_CPPFLAGS += -I $(top_srcdir)/apps/openssl/compat
 AM_CPPFLAGS += -D_PATH_SSL_CA_FILE=\"$(top_srcdir)/cert.pem\"
 
+# arch
+if HOST_AARCH64
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/aarch64/
+endif
+
+if HOST_ARM
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/arm/
+endif
+
+if HOST_I386
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/i386/
+endif
+
+# XXX - do we still need this?
+if HOST_MIPS
+endif
+
+if HOST_MIPS64
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/mips64/
+endif
+
+if HOST_POWERPC
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/powerpc/
+endif
+
+if HOST_POWERPC64
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/powerpc64/
+endif
+
+if HOST_RISCV64
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/riscv64/
+endif
+
+if HOST_SPARC64
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/sparc64/
+endif
+
+if HOST_X86_64
+AM_CPPFLAGS += -I$(top_srcdir)/crypto/arch/amd64/
+endif
+
 noinst_LTLIBRARIES = libtest.la
 libtest_la_LIBADD = $(libcrypto_la_objects)
 libtest_la_LIBADD += $(libcompat_la_objects)
@@ -297,9 +338,9 @@ check_PROGRAMS += cipherstest
 cipherstest_SOURCES = cipherstest.c
 
 ## clienttest
-#TESTS += clienttest
-#check_PROGRAMS += clienttest
-#clienttest_SOURCES = clienttest.c
+TESTS += clienttest
+check_PROGRAMS += clienttest
+clienttest_SOURCES = clienttest.c
 
 # cmstest
 TESTS += cmstest
@@ -393,11 +434,6 @@ ed25519test_SOURCES = ed25519test.c
 TESTS += evp_ecx_test
 check_PROGRAMS += evp_ecx_test
 evp_ecx_test_SOURCES = evp_ecx_test.c
-
-# evp_pkey_check
-TESTS += evp_pkey_check
-check_PROGRAMS += evp_pkey_check
-evp_pkey_check_SOURCES = evp_pkey_check.c
 
 # evp_pkey_cleanup
 TESTS += evp_pkey_cleanup
@@ -794,11 +830,6 @@ valid_handshakes_terminate_SOURCES = valid_handshakes_terminate.c
 TESTS += verifytest
 check_PROGRAMS += verifytest
 verifytest_SOURCES = verifytest.c
-
-# whirlpool
-TESTS += whirlpool_test
-check_PROGRAMS += whirlpool_test
-whirlpool_test_SOURCES = whirlpool_test.c
 
 # x25519test
 TESTS += x25519test

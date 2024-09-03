@@ -791,8 +791,6 @@ ERR_load_strings.3,ERR_PACK.3
 ERR_load_strings.3,ERR_get_next_error_library.3
 ERR_print_errors.3,ERR_print_errors_cb.3
 ERR_print_errors.3,ERR_print_errors_fp.3
-ERR_put_error.3,ERR_add_error_data.3
-ERR_put_error.3,ERR_add_error_vdata.3
 ERR_remove_state.3,ERR_remove_thread_state.3
 ERR_set_mark.3,ERR_pop_to_mark.3
 ESS_SIGNING_CERT_new.3,ESS_CERT_ID_free.3
@@ -992,14 +990,8 @@ EVP_PKEY_CTX_set_hkdf_md.3,EVP_PKEY_CTX_add1_hkdf_info.3
 EVP_PKEY_CTX_set_hkdf_md.3,EVP_PKEY_CTX_hkdf_mode.3
 EVP_PKEY_CTX_set_hkdf_md.3,EVP_PKEY_CTX_set1_hkdf_key.3
 EVP_PKEY_CTX_set_hkdf_md.3,EVP_PKEY_CTX_set1_hkdf_salt.3
-EVP_PKEY_add1_attr.3,EVP_PKEY_add1_attr_by_NID.3
-EVP_PKEY_add1_attr.3,EVP_PKEY_add1_attr_by_OBJ.3
-EVP_PKEY_add1_attr.3,EVP_PKEY_add1_attr_by_txt.3
-EVP_PKEY_add1_attr.3,EVP_PKEY_delete_attr.3
-EVP_PKEY_add1_attr.3,EVP_PKEY_get_attr.3
-EVP_PKEY_add1_attr.3,EVP_PKEY_get_attr_by_NID.3
-EVP_PKEY_add1_attr.3,EVP_PKEY_get_attr_by_OBJ.3
-EVP_PKEY_add1_attr.3,EVP_PKEY_get_attr_count.3
+EVP_PKEY_CTX_set_tls1_prf_md.3,EVP_PKEY_CTX_add1_tls1_prf_seed.3
+EVP_PKEY_CTX_set_tls1_prf_md.3,EVP_PKEY_CTX_set1_tls1_prf_secret.3
 EVP_PKEY_asn1_get_count.3,EVP_PKEY_asn1_find.3
 EVP_PKEY_asn1_get_count.3,EVP_PKEY_asn1_find_str.3
 EVP_PKEY_asn1_get_count.3,EVP_PKEY_asn1_get0.3
@@ -1211,7 +1203,6 @@ HMAC.3,HMAC_CTX_new.3
 HMAC.3,HMAC_CTX_reset.3
 HMAC.3,HMAC_CTX_set_flags.3
 HMAC.3,HMAC_Final.3
-HMAC.3,HMAC_Init.3
 HMAC.3,HMAC_Init_ex.3
 HMAC.3,HMAC_Update.3
 HMAC.3,HMAC_size.3
@@ -1651,6 +1642,7 @@ SSL_CIPHER_get_name.3,SSL_CIPHER_get_auth_nid.3
 SSL_CIPHER_get_name.3,SSL_CIPHER_get_bits.3
 SSL_CIPHER_get_name.3,SSL_CIPHER_get_cipher_nid.3
 SSL_CIPHER_get_name.3,SSL_CIPHER_get_digest_nid.3
+SSL_CIPHER_get_name.3,SSL_CIPHER_get_handshake_digest.3
 SSL_CIPHER_get_name.3,SSL_CIPHER_get_id.3
 SSL_CIPHER_get_name.3,SSL_CIPHER_get_kx_nid.3
 SSL_CIPHER_get_name.3,SSL_CIPHER_get_version.3
@@ -1739,6 +1731,7 @@ SSL_CTX_set_alpn_select_cb.3,SSL_get0_alpn_selected.3
 SSL_CTX_set_alpn_select_cb.3,SSL_select_next_proto.3
 SSL_CTX_set_alpn_select_cb.3,SSL_set_alpn_protos.3
 SSL_CTX_set_cert_store.3,SSL_CTX_get_cert_store.3
+SSL_CTX_set_cert_store.3,SSL_CTX_set1_cert_store.3
 SSL_CTX_set_cipher_list.3,SSL_set_cipher_list.3
 SSL_CTX_set_client_CA_list.3,SSL_CTX_add_client_CA.3
 SSL_CTX_set_client_CA_list.3,SSL_add_client_CA.3
@@ -1947,7 +1940,6 @@ TS_REQ_new.3,TS_STATUS_INFO_free.3
 TS_REQ_new.3,TS_STATUS_INFO_new.3
 TS_REQ_new.3,TS_TST_INFO_free.3
 TS_REQ_new.3,TS_TST_INFO_new.3
-UI_UTIL_read_pw.3,UI_UTIL_read_pw_string.3
 UI_create_method.3,UI_destroy_method.3
 UI_create_method.3,UI_method_get_closer.3
 UI_create_method.3,UI_method_get_flusher.3
@@ -2134,9 +2126,7 @@ X509_REQ_add1_attr.3,X509_REQ_get_attr_by_OBJ.3
 X509_REQ_add1_attr.3,X509_REQ_get_attr_count.3
 X509_REQ_add_extensions.3,X509_REQ_add_extensions_nid.3
 X509_REQ_add_extensions.3,X509_REQ_extension_nid.3
-X509_REQ_add_extensions.3,X509_REQ_get_extension_nids.3
 X509_REQ_add_extensions.3,X509_REQ_get_extensions.3
-X509_REQ_add_extensions.3,X509_REQ_set_extension_nids.3
 X509_REQ_new.3,X509_REQ_INFO_free.3
 X509_REQ_new.3,X509_REQ_INFO_new.3
 X509_REQ_new.3,X509_REQ_dup.3
@@ -2226,14 +2216,6 @@ X509_STORE_set1_param.3,X509_STORE_set_purpose.3
 X509_STORE_set1_param.3,X509_STORE_set_trust.3
 X509_STORE_set_verify_cb_func.3,X509_STORE_get_verify_cb.3
 X509_STORE_set_verify_cb_func.3,X509_STORE_set_verify_cb.3
-X509_TRUST_set.3,X509_TRUST_add.3
-X509_TRUST_set.3,X509_TRUST_cleanup.3
-X509_TRUST_set.3,X509_TRUST_get0.3
-X509_TRUST_set.3,X509_TRUST_get0_name.3
-X509_TRUST_set.3,X509_TRUST_get_by_id.3
-X509_TRUST_set.3,X509_TRUST_get_count.3
-X509_TRUST_set.3,X509_TRUST_get_flags.3
-X509_TRUST_set.3,X509_TRUST_get_trust.3
 X509_VERIFY_PARAM_new.3,X509_VERIFY_PARAM_add0_table.3
 X509_VERIFY_PARAM_new.3,X509_VERIFY_PARAM_free.3
 X509_VERIFY_PARAM_new.3,X509_VERIFY_PARAM_get0.3
@@ -2269,7 +2251,6 @@ X509_check_host.3,X509_check_email.3
 X509_check_host.3,X509_check_ip.3
 X509_check_host.3,X509_check_ip_asc.3
 X509_check_private_key.3,X509_REQ_check_private_key.3
-X509_check_trust.3,X509_TRUST_set_default.3
 X509_cmp.3,X509_CRL_cmp.3
 X509_cmp.3,X509_CRL_match.3
 X509_cmp.3,X509_NAME_cmp.3
@@ -2309,6 +2290,7 @@ X509_get0_signature.3,X509_CRL_get_signature_nid.3
 X509_get0_signature.3,X509_REQ_get0_signature.3
 X509_get0_signature.3,X509_REQ_get_signature_nid.3
 X509_get0_signature.3,X509_get0_tbs_sigalg.3
+X509_get0_signature.3,X509_get_signature_info.3
 X509_get0_signature.3,X509_get_signature_nid.3
 X509_get0_signature.3,X509_get_signature_type.3
 X509_get1_email.3,X509_email_free.3

@@ -31,8 +31,10 @@ LibreSSL Portable Release Notes:
 4.0.0 - In development
 
 	* Portable changes
+	  - Added initial Emscripten support in CMake builds.
 	  - Removed timegm() compatibility layer since all uses were replaced
 	    with OPENSSL_timegm(). Cleaned up the corresponding test harness.
+	  - The mips32 platform is no longer actively supported.
 	* Internal improvements
 	  - Cleaned up parts of the conf directory. Simplified some logic,
 	    fixed memory leaks.
@@ -58,17 +60,57 @@ LibreSSL Portable Release Notes:
 	  - Rewrote various BN conversion functions.
 	  - Improved certification request internals.
 	  - Removed unused DSA methods.
+	  - Improved X.509v3 extension internals. Fixed various bugs and leaks
+	    in X509V3_add1_i2d() and X509V3_get_d2i(). Their implementations
+	    now vaguely resemble code.
+	  - Rewrote BN_bn2mpi() using CBB.
+	  - Made most error string tables const.
+	  - Removed handling for SSLv2 client hello messages.
+	  - Improvements in the openssl(1) speed app's signal handler.
+	  - Cleaned up various X509v3_* extension API.
+	  - Unified the X.509v3 extension methods.
+	  - Added support for TLS PRF in the EVP KDF API.
+	  - Cleaned up cipher handling in SSL_SESSION.
+	  - Removed get_cipher from SSL_METHOD.
+	  - Rewrote CRYPTO_EX_DATA from scratch. The only intentional change of
+	    behavior is that there is now a hard limit on the number of indexes
+	    that can be allocated.
+	  - Removed bogus connect() call from netcat.
+	  - Uses of atoi() and strtol() in libcrypto were replaced with
+	    strtonum().
+	* New features
+	  - Added CRLfile option to the cms command of openssl(1) to specify
+	    additional CRLs for use during verification.
 	* Documentation improvements
 	  - Removed documentation of no longer existing API.
 	* Testing and proactive security
 	  - Switched the remaining tests to new certs.
 	* Compatibility changes
+	  - Protocol parsing in libtls was changed. The unsupported TLSv1.1
+	    and TLSv1.0 protocols are ignored and no longer enable or disable
+	    TLSv1.2 in surprising ways.
+	  - The one-step hashing functions, MD4(), MD5(), RIPEMD160(), SHA1(),
+	    all SHA-2, and HMAC() no longer support returning a static buffer.
+	    Callers must pass in a correctly sized buffer.
 	  - Removed workaround for F5 middle boxes.
 	  - Removed the useless pem2.h, a public header that was added since
 	    it was too hard to add a prototype to one file.
 	  - Only specified versions can be set on certs, CRLs and CSRs.
 	  - Prepared X509_REQ_{get,set}_extension_nids() for removal.
 	  - Removed unused PEM_USER and PEM_CTX types from pem.h.
+	  - Removed typdefs for COMP_CTX, COMP_METHOD, X509_CRL_METHOD, STORE,
+	    STORE_METHOD, and SSL_AEAD_CTX.
+	  - i2d_ASN1_OBJECT() now returns -1 on error like most other i2d_*.
+	  - SPKAC support was removed from openssl(1).
+	  - Added TLS1-PRF support to the EVP interface.
+	  - Removed ssl2.h, ssl23.h, and ui_compat.h.
+	  - Support for attributes in EVP_PKEYs was removed.
+	  - SSL_CTX_set1_cert_store() and SSL_CIPHER_get_handshake_digest()
+	    were added to libssl.
+	  - The completely broken UI_UTIL password API was removed.
+	  - The OpenSSL pkcs12 command and PKCS12_create() no longer support
+	    setting the Microsoft-specific Local Key Set and Cryptographic
+	    Service Provider attributes.
 	* Bug fixes
 	  - Made ASN1_TIME_set_string() and ASN1_TIME_set_string_X509() match
 	    their documentation. They always set an RFC 5280 conformant time.
@@ -85,6 +127,16 @@ LibreSSL Portable Release Notes:
 	  - Add guard to avoid contracting the number linear hash buckets
 	    to zero, which could lead to a crash due to accessing a zero
 	    sized allocation.
+	  - Fixed i2d_ASN1_OBJECT() with an output buffer pointing to NULL.
+	  - Implemented RSA key exchange in constant time. This is done by
+	    decrypting with RSA_NO_PADDING and checking the padding in libssl
+	    in constant time. This is possible because the pre-master secret
+	    is of known length based on the size of the RSA key.
+	  - Rewrote SSL_select_next_proto() using CBS, also fixing a buffer
+	    overread that wasn't reachable when used as intended from an
+	    ALPN callback.
+	  - Avoid pushing a spurious error onto the error stack in
+	    ssl_sigalg_select().
 
 3.9.0 - Development release
 
