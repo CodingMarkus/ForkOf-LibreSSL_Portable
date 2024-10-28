@@ -184,6 +184,13 @@ for i in $libcrypto_src/bn/arch/*; do
 	$CP $libcrypto_src/bn/arch/$arch/* crypto/bn/arch/$arch/
 done
 
+for arch in wasm32 asmjs; do
+	mkdir -p crypto/arch/$arch
+	$CP crypto/arch/i386/* crypto/arch/$arch
+	mkdir -p crypto/bn/arch/$arch
+	$CP crypto/bn/arch/i386/* crypto/bn/arch/$arch
+done
+
 $CP crypto/compat/b_win.c crypto/bio
 $CP crypto/compat/ui_openssl_win.c crypto/ui
 # add the libcrypto symbol export list

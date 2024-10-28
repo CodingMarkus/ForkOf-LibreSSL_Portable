@@ -228,6 +228,9 @@ include/openssl/*.h
 /apps/openssl/*.cnf
 /apps/openssl/*.pem
 /apps/openssl/openssl
+/apps/openssl/openssl.js
+/apps/openssl/openssl.mem
+/apps/openssl/openssl.wasm
 /apps/openssl/compat/strtonum.c
 !/apps/openssl/apps_win.c
 !/apps/openssl/certhash_win.c

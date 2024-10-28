@@ -208,6 +208,13 @@ endif
 if HOST_I386
 libcrypto_la_SOURCES += arch/i386/crypto_cpu_caps.c
 endif
+if HOST_WASM32
+libcrypto_la_SOURCES += arch/i386/crypto_cpu_caps.c
+endif
+if HOST_ASMJS
+libcrypto_la_SOURCES += arch/i386/crypto_cpu_caps.c
+endif
+
 
 libcrypto_la_SOURCES += cpt_err.c
 libcrypto_la_SOURCES += cryptlib.c
@@ -436,6 +443,21 @@ libcrypto_la_CPPFLAGS += -I$(top_srcdir)/crypto/bn/arch/amd64/
 endif
 noinst_HEADERS += arch/amd64/crypto_arch.h
 noinst_HEADERS += bn/arch/amd64/bn_arch.h
+
+if HOST_WASM32
+libcrypto_la_CPPFLAGS += -I$(top_srcdir)/crypto/arch/wasm32/
+libcrypto_la_CPPFLAGS += -I$(top_srcdir)/crypto/bn/arch/wasm32/
+endif
+noinst_HEADERS += arch/wasm32/crypto_arch.h
+noinst_HEADERS += bn/arch/wasm32/bn_arch.h
+
+if HOST_ASMJS
+libcrypto_la_CPPFLAGS += -I$(top_srcdir)/crypto/arch/asmjs/
+libcrypto_la_CPPFLAGS += -I$(top_srcdir)/crypto/bn/arch/asmjs/
+endif
+noinst_HEADERS += arch/asmjs/crypto_arch.h
+noinst_HEADERS += bn/arch/asmjs/bn_arch.h
+
 
 # buffer
 libcrypto_la_SOURCES += buffer/buf_err.c

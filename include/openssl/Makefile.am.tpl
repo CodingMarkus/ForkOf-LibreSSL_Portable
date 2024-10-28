@@ -38,5 +38,12 @@ endif
 if HOST_X86_64
 	-cp $(top_srcdir)/include/arch/amd64/opensslconf.h opensslconf.h
 endif
+if HOST_WASM32
+	-cp $(top_srcdir)/include/arch/i386/opensslconf.h opensslconf.h
+endif
+if HOST_ASMJS
+	-cp $(top_srcdir)/include/arch/i386/opensslconf.h opensslconf.h
+endif
+
 
 opensslinclude_HEADERS = opensslconf.h

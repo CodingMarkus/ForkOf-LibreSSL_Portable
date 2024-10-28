@@ -164,3 +164,13 @@ if HOST_X86_64
 libssl_la_CPPFLAGS += -I$(top_srcdir)/crypto/arch/amd64/
 endif
 noinst_HEADERS += $(top_srcdir)/crypto/arch/amd64/crypto_arch.h
+
+if HOST_WASM32
+libssl_la_CPPFLAGS += -I$(top_srcdir)/crypto/arch/wasm32/
+endif
+noinst_HEADERS += $(top_srcdir)/crypto/arch/wasm32/crypto_arch.h
+
+if HOST_ASMJS
+libssl_la_CPPFLAGS += -I$(top_srcdir)/crypto/arch/asmjs/
+endif
+noinst_HEADERS += $(top_srcdir)/crypto/arch/asmjs/crypto_arch.h

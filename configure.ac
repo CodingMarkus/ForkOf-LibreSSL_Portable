@@ -86,7 +86,9 @@ AS_CASE([$host_cpu],
 	[mips*], [host_cpu=mips enable_asm=no],
 	[powerpc*], [host_cpu=powerpc],
 	[ppc64*], [host_cpu=powerpc64],
-	[x86_64], [HOSTARCH=intel]
+	[x86_64], [HOSTARCH=intel],
+	[wasm32], [enable_asm=no],
+	[asmjs], [enable_asm=no]
 )
 AM_CONDITIONAL([HOST_CPU_IS_INTEL], [test "x$HOSTARCH" = "xintel"])
 
@@ -100,6 +102,8 @@ AM_CONDITIONAL([HOST_POWERPC64], [test "$host_cpu" = "ppc64"])
 AM_CONDITIONAL([HOST_RISCV64],   [test "$host_cpu" = "riscv64"])
 AM_CONDITIONAL([HOST_SPARC64],   [test "$host_cpu" = "sparc64"])
 AM_CONDITIONAL([HOST_X86_64],    [test "$host_cpu" = "x86_64"])
+AM_CONDITIONAL([HOST_WASM32],    [test "$host_cpu" = "wasm32"])
+AM_CONDITIONAL([HOST_ASMJS],     [test "$host_cpu" = "asmjs"])
 
 AC_MSG_CHECKING([if .gnu.warning accepts long strings])
 AC_LINK_IFELSE([AC_LANG_SOURCE([[
@@ -131,6 +135,10 @@ AM_CONDITIONAL([HOST_ASM_MASM_X86_64],
     [test "x$HOST_ABI" = "xmasm" -a "$host_cpu" = "x86_64" -a "x$enable_asm" != "xno"])
 AM_CONDITIONAL([HOST_ASM_MINGW64_X86_64],
     [test "x$HOST_ABI" = "xmingw64" -a "$host_cpu" = "x86_64" -a "x$enable_asm" != "xno"])
+AM_CONDITIONAL([HOST_ASM_WASM32],
+    [test "x$HOST_ABI" = "xwasm32" -a "$host_cpu" = "wasm32" -a "x$enable_asm" != "xno"])
+AM_CONDITIONAL([HOST_ASM_ASMJS],
+    [test "x$HOST_ABI" = "xasmjs" -a "$host_cpu" = "asmjs" -a "x$enable_asm" != "xno"])
 
 AC_CONFIG_FILES([
 	Makefile
@@ -161,5 +169,7 @@ AC_ARG_ENABLE([libtls-only],
 AM_CONDITIONAL([ENABLE_LIBTLS_ONLY], [test "x$enable_libtls_only" = xyes])
 
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
+
+ac_clean_files="$ac_clean_files a.wasm"
 
 AC_OUTPUT
