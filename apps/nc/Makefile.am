@@ -47,3 +47,5 @@ nc_SOURCES += compat/readpassphrase.c
 endif
 
 endif
+
+CLEANFILES = nc.wasm nc.js

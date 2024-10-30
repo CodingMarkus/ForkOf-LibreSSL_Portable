@@ -28,3 +28,5 @@ noinst_HEADERS = http.h
 if !HAVE_MEMMEM
 ocspcheck_SOURCES += compat/memmem.c
 endif
+
+CLEANFILES = ocspcheck.wasm ocspcheck.js

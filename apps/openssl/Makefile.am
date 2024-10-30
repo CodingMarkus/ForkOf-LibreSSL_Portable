@@ -96,3 +96,4 @@ noinst_HEADERS += timeouts.h
 
 EXTRA_DIST = CMakeLists.txt
 
+CLEANFILES = openssl.wasm openssl.js
