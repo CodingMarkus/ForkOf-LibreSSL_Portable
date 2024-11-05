@@ -32,15 +32,21 @@ LibreSSL Portable Release Notes:
 
 	* Portable changes
 	  - Fixed CMake builds on FreeBSD.
+	  - Fixed the --prefix option for cmake --install.
 	* Internal improvements
 	  - Cleaned up the error implementation.
 	  - Many bug fixes and simplifications in the EC ASN.1 code.
+	  - Corrected DER encoding for EC keys and parameters.
+	  - Polished EC_POINT_{oct2point,point2oct}() internals.
 	  - Reworked CPU capabilities detection.
+	  - Improved the code setting compressed coordinates for EC points.
 	* Compatibility changes
 	  - Added an OPENSSL_INIT_NO_ATEXIT flag for OPENSSL_init_crypto().
 	    It has no effect since LibreSSL doesn't call atexit().
 	  - Elliptic curve parameters are only accepted if they encode a
-	    builtin curve.
+	    built-in curve.
+	* Bug fixes
+	  - Plugged a leak in eckey_compute_pubkey().
 
 4.0.0 - Stable release
 

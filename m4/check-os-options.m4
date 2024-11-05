@@ -147,6 +147,7 @@ char buf[1]; getentropy(buf, 1);
 
 	*)
 		HOST_OS=unsupported
+		HOST_ABI=elf
 		;;
 esac
 

@@ -373,18 +373,16 @@ set(
 	dsa/dsa_prn.c
 	ec/ec_ameth.c
 	ec/ec_asn1.c
+	ec/ec_convert.c
 	ec/ec_curve.c
 	ec/ec_err.c
 	ec/ec_key.c
 	ec/ec_kmeth.c
 	ec/ec_lib.c
 	ec/ec_mult.c
-	ec/ec_oct.c
 	ec/ec_pmeth.c
-	ec/ec_print.c
 	ec/eck_prn.c
 	ec/ecp_mont.c
-	ec/ecp_oct.c
 	ec/ecp_smpl.c
 	ec/ecx_methods.c
 	ecdh/ecdh.c
