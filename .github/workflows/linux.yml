@@ -22,14 +22,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-20.04", "ubuntu-22.04", "ubuntu-24.04"]
+        os: ["ubuntu-22.04", "ubuntu-24.04"]
         arch: ["native", "arm32", "arm64", "mingw32", "mingw64", "mips64"]
         compiler: ["gcc"]
         include:
-          - os: "ubuntu-20.04"
+          - os: "ubuntu-22.04"
             arch: "native"
             compiler: "clang"
-          - os: "ubuntu-22.04"
+          - os: "ubuntu-24.04"
             arch: "native"
             compiler: "clang"
     steps:
@@ -45,7 +45,7 @@ jobs:
   # Test ASAN with and without ASM enabled.
   test-asan:
     name: "ASAN (${{ matrix.asm == 'ON' && 'asm' || 'no-asm' }})"
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
     if: ${{ github.repository_owner == 'libressl' || github.event_name != 'schedule' }}
     permissions:
       contents: read

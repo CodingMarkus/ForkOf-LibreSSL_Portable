@@ -10,9 +10,13 @@ AM_CPPFLAGS += -I $(top_srcdir)/crypto/
 AM_CPPFLAGS += -I $(top_srcdir)/crypto/asn1
 AM_CPPFLAGS += -I $(top_srcdir)/crypto/bio
 AM_CPPFLAGS += -I $(top_srcdir)/crypto/bn
+AM_CPPFLAGS += -I $(top_srcdir)/crypto/bytestring
 AM_CPPFLAGS += -I $(top_srcdir)/crypto/curve25519
+AM_CPPFLAGS += -I $(top_srcdir)/crypto/ec
 AM_CPPFLAGS += -I $(top_srcdir)/crypto/evp
+AM_CPPFLAGS += -I $(top_srcdir)/crypto/mlkem
 AM_CPPFLAGS += -I $(top_srcdir)/crypto/modes
+AM_CPPFLAGS += -I $(top_srcdir)/crypto/sha
 AM_CPPFLAGS += -I $(top_srcdir)/crypto/x509
 AM_CPPFLAGS += -I $(top_srcdir)/ssl
 AM_CPPFLAGS += -I $(top_srcdir)/apps/openssl
@@ -542,6 +546,35 @@ TESTS += md_test
 check_PROGRAMS += md_test
 md_test_SOURCES = md_test.c
 
+noinst_HEADERS += mlkem_tests_util.h
+noinst_HEADERS += parse_test_file.h
+
+# mlkem_tests
+TESTS += mlkem_tests.sh
+check_PROGRAMS += mlkem_tests
+mlkem_tests_SOURCES = mlkem_tests.c mlkem_tests_util.c parse_test_file.c
+EXTRA_DIST += mlkem_tests.sh
+EXTRA_DIST += mlkem768_decap_tests.txt
+EXTRA_DIST += mlkem768_encap_tests.txt
+EXTRA_DIST += mlkem768_keygen_tests.txt
+EXTRA_DIST += mlkem768_nist_decap_tests.txt
+EXTRA_DIST += mlkem768_nist_keygen_tests.txt
+EXTRA_DIST += mlkem1024_decap_tests.txt
+EXTRA_DIST += mlkem1024_encap_tests.txt
+EXTRA_DIST += mlkem1024_keygen_tests.txt
+EXTRA_DIST += mlkem1024_nist_decap_tests.txt
+EXTRA_DIST += mlkem1024_nist_keygen_tests.txt
+
+# mlkem_iteration_tests
+TESTS += mlkem_iteration_tests
+check_PROGRAMS += mlkem_iteration_tests
+mlkem_iteration_tests_SOURCES = mlkem_iteration_tests.c mlkem_tests_util.c
+
+# mlkem_unittest
+TESTS += mlkem_unittest
+check_PROGRAMS += mlkem_unittest
+mlkem_unittest_SOURCES = mlkem_unittest.c mlkem_tests_util.c
+
 # objectstest
 TESTS += objectstest
 check_PROGRAMS += objectstest
@@ -656,6 +689,12 @@ TESTS += record_layer_test
 check_PROGRAMS += record_layer_test
 record_layer_test_SOURCES = record_layer_test.c
 
+# renegotiation_test
+TESTS += renegotiation_test.sh
+check_PROGRAMS += renegotiation_test
+renegotiation_test_SOURCES = renegotiation_test.c
+EXTRA_DIST += renegotiation_test.sh renegotiation_test.bat
+
 # rfc3779
 TESTS += rfc3779
 rfc3779_CPPFLAGS = $(AM_CPPFLAGS)
@@ -677,6 +716,11 @@ EXTRA_DIST += rfc5280time_small.test
 TESTS += rmd_test
 check_PROGRAMS += rmd_test
 rmd_test_SOURCES = rmd_test.c
+
+# rsa_method_test
+TESTS += rsa_method_test
+check_PROGRAMS += rsa_method_test
+rsa_method_test_SOURCES = rsa_method_test.c
 
 # rsa_padding_test
 TESTS += rsa_padding_test
@@ -865,6 +909,11 @@ x509_extensions_test_SOURCES = x509_extensions_test.c
 TESTS += x509_info
 check_PROGRAMS += x509_info
 x509_info_SOURCES = x509_info.c
+
+# x509_name_test
+TESTS += x509_name_test
+check_PROGRAMS += x509_name_test
+x509_name_test_SOURCES = x509_name_test.c
 
 # x509name
 TESTS += x509name

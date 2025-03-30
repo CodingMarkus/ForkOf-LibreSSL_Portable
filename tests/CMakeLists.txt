@@ -6,9 +6,13 @@ include_directories(
 	../crypto/asn1
 	../crypto/bio
 	../crypto/bn
+	../crypto/bytestring
 	../crypto/curve25519
+	../crypto/ec
 	../crypto/evp
+	../crypto/mlkem
 	../crypto/modes
+	../crypto/sha
 	../crypto/x509
 	../ssl
 	../apps/openssl
@@ -534,6 +538,28 @@ add_executable(md_test md_test.c)
 target_link_libraries(md_test ${OPENSSL_TEST_LIBS})
 add_platform_test(md_test md_test)
 
+# mlkem_tests
+add_executable(mlkem_tests mlkem_tests.c mlkem_tests_util.c parse_test_file.c)
+target_link_libraries(mlkem_tests ${OPENSSL_TEST_LIBS})
+prepare_emscripten_test_target(mlkem_tests)
+if(NOT WIN32)
+	add_test(NAME mlkem_tests COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/mlkem_tests.sh)
+	set_tests_properties(mlkem_tests PROPERTIES ENVIRONMENT "srcdir=${TEST_SOURCE_DIR}")
+endif()
+# XXX - add tests for Windows
+
+# mlkem_iteration_tests
+add_executable(mlkem_iteration_tests mlkem_iteration_tests.c mlkem_tests_util.c)
+target_link_libraries(mlkem_iteration_tests ${OPENSSL_TEST_LIBS})
+prepare_emscripten_test_target(mlkem_iteration_tests)
+add_platform_test(mlkem_iteration_tests mlkem_iteration_tests)
+
+# mlkem_unittest
+add_executable(mlkem_unittest mlkem_unittest.c mlkem_tests_util.c)
+target_link_libraries(mlkem_unittest ${OPENSSL_TEST_LIBS})
+prepare_emscripten_test_target(mlkem_unittest)
+add_platform_test(mlkem_unittest mlkem_unittest)
+
 # objectstest
 add_executable(objectstest objectstest.c)
 target_link_libraries(objectstest ${OPENSSL_TEST_LIBS})
@@ -543,7 +569,7 @@ add_platform_test(objectstest objectstest)
 if(ENABLE_EXTRATESTS)
 	add_executable(ocsp_test ocsp_test.c)
 	target_link_libraries(ocsp_test ${OPENSSL_TEST_LIBS})
-	if(NOT MSVC)
+	if(NOT WIN32)
 		add_test(NAME ocsptest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/ocsptest.sh)
 	else()
 		add_test(NAME ocsptest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/ocsptest.bat $<TARGET_FILE:ocsp_test>)
@@ -592,7 +618,7 @@ add_platform_test(policy policy)
 # pq_test
 add_executable(pq_test pq_test.c)
 target_link_libraries(pq_test ${OPENSSL_TEST_LIBS})
-if(NOT MSVC)
+if(NOT WIN32)
 	add_test(NAME pq_test COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/pq_test.sh)
 else()
 	add_test(NAME pq_test COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/pq_test.bat
@@ -605,7 +631,7 @@ set(QUICTEST_SRC quictest.c)
 add_executable(quictest ${QUICTEST_SRC})
 target_link_libraries(quictest ${OPENSSL_TEST_LIBS})
 prepare_emscripten_test_target(quictest)
-if(NOT MSVC)
+if(NOT WIN32)
 	add_test(NAME quictest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/quictest.sh)
 else()
 	add_test(NAME quictest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/quictest.bat $<TARGET_FILE:quictest>)
@@ -637,6 +663,18 @@ add_executable(record_layer_test record_layer_test.c)
 target_link_libraries(record_layer_test ${OPENSSL_TEST_LIBS})
 add_platform_test(record_layer_test record_layer_test)
 
+# renegotiation_test
+set(RENEGOTIATION_TEST_SRC renegotiation_test.c)
+add_executable(renegotiation_test ${RENEGOTIATION_TEST_SRC})
+target_link_libraries(renegotiation_test ${OPENSSL_TEST_LIBS})
+prepare_emscripten_test_target(renegotiation_test)
+if(NOT MSVC)
+	add_test(NAME renegotiation_test COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/renegotiation_test.sh)
+else()
+	add_test(NAME renegotiation_test COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/renegotiation_test.bat $<TARGET_FILE:renegotiation_test>)
+endif()
+set_tests_properties(renegotiation_test PROPERTIES ENVIRONMENT "srcdir=${TEST_SOURCE_DIR}")
+
 # rfc3779
 add_executable(rfc3779 rfc3779.c)
 target_link_libraries(rfc3779 ${OPENSSL_TEST_LIBS})
@@ -655,6 +693,11 @@ add_executable(rmd_test rmd_test.c)
 target_link_libraries(rmd_test ${OPENSSL_TEST_LIBS})
 add_platform_test(rmd_test rmd_test)
 
+# rsa_method_test
+add_executable(rsa_method_test rsa_method_test.c)
+target_link_libraries(rsa_method_test ${OPENSSL_TEST_LIBS})
+add_platform_test(rsa_method_test rsa_method_test)
+
 # rsa_padding_test
 add_executable(rsa_padding_test rsa_padding_test.c)
 target_link_libraries(rsa_padding_test ${OPENSSL_TEST_LIBS})
@@ -671,7 +714,7 @@ add_platform_test(rsa_test rsa_test)
 add_executable(servertest servertest.c)
 target_link_libraries(servertest ${OPENSSL_TEST_LIBS})
 prepare_emscripten_test_target(servertest)
-if(NOT MSVC)
+if(NOT WIN32)
 	add_test(NAME servertest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/servertest.sh)
 else()
 	add_test(NAME servertest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/servertest.bat $<TARGET_FILE:servertest>)
@@ -688,7 +731,7 @@ set(SHUTDOWNTEST_SRC shutdowntest.c)
 add_executable(shutdowntest ${SHUTDOWNTEST_SRC})
 target_link_libraries(shutdowntest ${OPENSSL_TEST_LIBS})
 prepare_emscripten_test_target(shutdowntest)
-if(NOT MSVC)
+if(NOT WIN32)
 	add_test(NAME shutdowntest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/shutdowntest.sh)
 else()
 	add_test(NAME shutdowntest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/shutdowntest.bat $<TARGET_FILE:shutdowntest>)
@@ -760,7 +803,7 @@ add_platform_test(ssl_versions ssl_versions)
 add_executable(ssltest ssltest.c)
 target_link_libraries(ssltest ${OPENSSL_TEST_LIBS})
 prepare_emscripten_test_target(ssltest)
-if(NOT MSVC)
+if(NOT WIN32)
 	add_test(NAME ssltest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/ssltest.sh)
 else()
 	add_test(NAME ssltest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/ssltest.bat $<TARGET_FILE:ssltest> $<TARGET_FILE:openssl>)
@@ -771,7 +814,7 @@ set_tests_properties(ssltest PROPERTIES ENVIRONMENT "srcdir=${TEST_SOURCE_DIR}")
 # access various files for IO. Adding such files to --preload-file is infeasible.
 if(NOT EMSCRIPTEN)
 	# testdsa
-	if(NOT MSVC)
+	if(NOT WIN32)
 		add_test(NAME testdsa COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testdsa.sh)
 	else()
 		add_test(NAME testdsa COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testdsa.bat $<TARGET_FILE:openssl>)
@@ -779,7 +822,7 @@ if(NOT EMSCRIPTEN)
 	set_tests_properties(testdsa PROPERTIES ENVIRONMENT "srcdir=${TEST_SOURCE_DIR}")
 
 	# testenc
-	if(NOT MSVC)
+	if(NOT WIN32)
 		add_test(NAME testenc COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testenc.sh)
 	else()
 		add_test(NAME testenc COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testenc.bat $<TARGET_FILE:openssl>)
@@ -787,7 +830,7 @@ if(NOT EMSCRIPTEN)
 	set_tests_properties(testenc PROPERTIES ENVIRONMENT "srcdir=${TEST_SOURCE_DIR}")
 
 	# testrsa
-	if(NOT MSVC)
+	if(NOT WIN32)
 		add_test(NAME testrsa COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testrsa.sh)
 	else()
 		add_test(NAME testrsa COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testrsa.bat $<TARGET_FILE:openssl>)
@@ -824,7 +867,7 @@ if(NOT (CMAKE_SYSTEM_NAME MATCHES "WindowsStore" OR EMSCRIPTEN))
 
 	add_executable(tlstest ${TLSTEST_SRC})
 	target_link_libraries(tlstest ${LIBTLS_TEST_LIBS})
-	if(NOT MSVC)
+	if(NOT WIN32)
 		add_test(NAME tlstest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tlstest.sh)
 	else()
 		add_test(NAME tlstest COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tlstest.bat $<TARGET_FILE:tlstest>)
@@ -887,6 +930,11 @@ add_platform_test(x509_extensions_test x509_extensions_test)
 add_executable(x509_info x509_info.c)
 target_link_libraries(x509_info ${OPENSSL_TEST_LIBS})
 add_platform_test(x509_info x509_info)
+
+# x509_name_test
+add_executable(x509_name_test x509_name_test.c)
+target_link_libraries(x509_name_test ${OPENSSL_TEST_LIBS})
+add_platform_test(x509_name_test x509_name_test)
 
 # x509name
 add_executable(x509name x509name.c)

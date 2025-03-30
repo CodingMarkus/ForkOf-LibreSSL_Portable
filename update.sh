@@ -287,12 +287,8 @@ for abi in elf macosx masm mingw64; do
 	gen_asm_stdout $abi bn/asm/modexp512-x86_64.pl   bn/modexp512-$abi-x86_64.S
 	gen_asm_stdout $abi bn/asm/x86_64-mont.pl        bn/mont-$abi-x86_64.S
 	gen_asm_stdout $abi bn/asm/x86_64-mont5.pl       bn/mont5-$abi-x86_64.S
-	gen_asm_stdout $abi md5/asm/md5-x86_64.pl        md5/md5-$abi-x86_64.S
 	gen_asm_stdout $abi modes/asm/ghash-x86_64.pl    modes/ghash-$abi-x86_64.S
 	gen_asm_stdout $abi rc4/asm/rc4-x86_64.pl        rc4/rc4-$abi-x86_64.S
-	gen_asm_stdout $abi sha/asm/sha1-x86_64.pl       sha/sha1-$abi-x86_64.S
-	gen_asm        $abi sha/asm/sha512-x86_64.pl     sha/sha256-$abi-x86_64.S
-	gen_asm        $abi sha/asm/sha512-x86_64.pl     sha/sha512-$abi-x86_64.S
 done
 
 # copy libtls source
@@ -356,7 +352,7 @@ $GREP '^[A-Za-z0-9_]' < $libssl_src/Symbols.list > ssl/ssl.sym
 # copy libcrypto tests
 echo "copying tests"
 touch tests/empty.c
-for i in `find $libcrypto_regress -name '*.c'`; do
+for i in `find $libcrypto_regress -name '*.[ch]'`; do
 	 $CP "$i" tests
 done
 $CP $libcrypto_regress/evp/evptests.txt tests
@@ -364,6 +360,7 @@ $CP $libcrypto_regress/aead/*.txt tests
 $CP $libcrypto_regress/ct/ctlog.conf tests
 $CP $libcrypto_regress/ct/*.crt tests
 $CP $libcrypto_regress/x509/policy/*.pem tests
+$CP $libcrypto_regress/mlkem/*.txt tests
 
 # generate libcrypto freenull.c
 awk -f $libcrypto_regress/free/freenull.awk \

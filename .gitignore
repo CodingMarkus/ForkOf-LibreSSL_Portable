@@ -39,6 +39,7 @@ Makefile.in
 
 # CMake stuff
 build
+cmake-build-debug/
 
 # Libtool stuff
 .libs
@@ -115,8 +116,11 @@ tests/freenull*
 tests/gost2814789t*
 tests/key_schedule*
 tests/lhash_test*
+tests/mlkem*
 tests/mont*
+tests/parse*
 tests/policy*
+tests/renegotiation_test*
 tests/rfc3779*
 tests/rfc5280time*
 tests/ssl_get_shared_ciphers*
@@ -140,6 +144,7 @@ tests/x509_algor*
 tests/x509_asn1*
 tests/x509_extensions_test*
 tests/x509_info*
+tests/x509_name_test*
 tests/x509attribute*
 tests/x509name*
 tests/x509req_ext*
@@ -237,10 +242,14 @@ include/openssl/*.h
 
 /crypto/*
 !/crypto/Makefile.am.*
+!/crypto/compat/
+/crypto/compat/*
 !/crypto/compat/arc4random.h
 !/crypto/compat/b_win.c
 !/crypto/compat/explicit_bzero_win.c
 !/crypto/compat/freezero.c
+!/crypto/compat/getdelim.c
+!/crypto/compat/getline.c
 !/crypto/compat/getpagesize.c
 !/crypto/compat/posix_win.c
 !/crypto/compat/bsd_asprintf.c
